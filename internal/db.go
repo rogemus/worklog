@@ -2,6 +2,7 @@ package internal
 
 import (
 	"encoding/json"
+	"errors"
 	"os"
 	"slices"
 )
@@ -13,9 +14,16 @@ type DB struct {
 }
 
 func NewDb() *DB {
-	return &DB{
+	db := &DB{
 		path: DB_FILE_PATH,
 	}
+
+	err := db.createDBfile()
+	if err != nil {
+		panic(err)
+	}
+
+	return db
 }
 
 func (db *DB) AddTask(task Task) (Task, error) {
@@ -26,6 +34,7 @@ func (db *DB) AddTask(task Task) (Task, error) {
 
 	newIndex := schema.LastIndex + 1
 	task.Id = newIndex
+	schema.LastIndex = newIndex
 	schema.Tasks = append([]Task{task}, schema.Tasks...)
 
 	if err := db.saveDBFile(schema); err != nil {
@@ -124,6 +133,27 @@ func (db *DB) FindTasksByName(query string) ([]Task, error) {
 	}
 
 	return tasks, nil
+}
+
+func (db *DB) createDBfile() error {
+	schema := DBSchema{LastIndex: 0, Tasks: []Task{}}
+
+	if _, err := os.Stat(db.path); errors.Is(err, os.ErrNotExist) {
+		file, err := os.Create(db.path)
+		if err != nil {
+			return ErrorCannotCreateDB
+		}
+		defer file.Close()
+
+		json, _ := json.Marshal(schema)
+
+		_, err = file.Write(json)
+		if err != nil {
+			return ErrorCannotCreateDB
+		}
+	}
+
+	return nil
 }
 
 func (db *DB) readDBFile() (DBSchema, error) {
