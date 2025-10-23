@@ -9,9 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var (
-	date string
-)
+var date string
 
 var newCmd = &cobra.Command{
 	Use:   "new",
@@ -26,7 +24,7 @@ var newCmd = &cobra.Command{
 		}
 
 		if taskName == "" {
-			fmt.Println("No input text provided")
+			fmt.Println("Error: No input text provided")
 			return
 		}
 
@@ -34,18 +32,19 @@ var newCmd = &cobra.Command{
 			parsedDate, err := time.Parse("2006-01-02", date)
 
 			if err != nil {
-				fmt.Println("Invalid task date format, using current day as task date")
+				fmt.Println("Error: Invalid task date format, using current day as task date")
 				return
 			}
 
 			taskDate = parsedDate
 		}
 
-		newTask := internal.NewTask(taskName, taskDate, nil)
-		_, err := db.AddTask(newTask)
+		newTask, err := db.AddTask(internal.NewTask(taskName, taskDate, nil))
 		if err != nil {
-			panic(err)
+			fmt.Println("Error: cannot create task", err)
+			return
 		}
-		fmt.Println("task created")
+
+		fmt.Printf("Success: Task created id [%d] [%s]\n", newTask.Id, newTask.Name)
 	},
 }
