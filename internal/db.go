@@ -12,7 +12,10 @@ func NewDb() *DB {
 }
 
 func (db *DB) AddTask(task Task) {
-	fmt.Printf("New task [%s] | Task Date [%s]", task.name, task.date.Format("2006-01-02 15:04:05"))
+	fmt.Printf("New task [%s] | Task Date [%s]", task.Name, task.Date.Format("2006-01-02 15:04:05"))
+	tasks := ReadFile()
+	tasks = append(tasks, task)
+	UpdateFile(tasks)
 }
 
 func (db *DB) UpdateTask(task Task) {}
