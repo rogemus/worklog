@@ -121,10 +121,28 @@ func (db *DB) FindTasksByName(query string) ([]Task, error) {
 	}
 
 	for _, task := range schema.Tasks {
-		t, ok := task.MatchName(query)
+		if ok := task.MatchName(query); ok {
+			tasks = append(tasks, task)
+		}
+	}
 
-		if ok {
-			tasks = append(tasks, t)
+	if len(tasks) == 0 {
+		return nil, ErrorNoTasks
+	}
+
+	return tasks, nil
+}
+
+func (db *DB) FindTasksForWeek(weekRange WeekRange) ([]Task, error) {
+	var tasks []Task
+	schema, err := db.readDBFile()
+	if err != nil {
+		return nil, err
+	}
+
+	for _, task := range schema.Tasks {
+		if ok := task.InRange(weekRange); ok {
+			tasks = append(tasks, task)
 		}
 	}
 
