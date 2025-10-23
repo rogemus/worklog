@@ -43,6 +43,10 @@ var newCmd = &cobra.Command{
 		}
 
 		newTask := internal.NewTask(taskName, taskDate, nil)
-		db.AddTask(newTask)
+		_, err := db.AddTask(newTask)
+		if err != nil {
+			panic(err)
+		}
+		fmt.Println("task created")
 	},
 }
