@@ -21,7 +21,6 @@ var newCmd = &cobra.Command{
 		var taskName string
 		taskDate := time.Now()
 
-		// Get input text from args or stdin
 		if len(args) > 0 {
 			taskName = strings.Join(args, " ")
 		}
