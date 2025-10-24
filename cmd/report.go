@@ -26,9 +26,10 @@ var reportCmd = &cobra.Command{
 			return
 		}
 
-		fmt.Printf("Tasks for week: [%s - %s]\n", week.Start, week.End)
-		for _, task := range tasks {
-			fmt.Printf("%s [%d] %s\n", task.Date, task.Id, task.Name)
-		}
+		listTitleStr := week.RenderTitle()
+		fmt.Println(listTitleStr)
+
+		listStr := internal.RenderAsList(tasks)
+		fmt.Println(listStr)
 	},
 }

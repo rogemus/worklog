@@ -13,5 +13,9 @@ func InitCommands(database *internal.DB) {
 
 	rootCmd.AddCommand(removeCmd)
 
+	// TODO
+	// reportCmd.Flags().StringVar(&date, "date", "", "tasks from last week")
+	// reportCmd.Flags().StringVar(&date, "date", "", "tasks from current month")
+	// reportCmd.Flags().StringVar(&date, "date", "", "tasks from last month")
 	rootCmd.AddCommand(reportCmd)
 }
