@@ -44,6 +44,15 @@ func (db *DB) AddTask(task Task) (Task, error) {
 	return task, nil
 }
 
+func (db *DB) RemoveAllTasks() error {
+	schema := DBSchema{LastIndex: 0, Tasks: []Task{}}
+	if err := db.saveDBFile(schema); err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (db *DB) RemoveTask(taskId int16) error {
 	schema, err := db.readDBFile()
 	if err != nil {
