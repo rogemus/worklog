@@ -2,24 +2,44 @@ package internal
 
 import "github.com/charmbracelet/lipgloss"
 
-var blue = lipgloss.Color("12")
-var magenta = lipgloss.Color("5")
-var dim = lipgloss.Color("250")
+// COLORS
+var (
+	blue    = lipgloss.Color("12")
+	magenta = lipgloss.Color("5")
+	dim     = lipgloss.Color("250")
+)
 
-var itemStyles = lipgloss.NewStyle().
-	PaddingRight(1).
-	PaddingLeft(1)
+// SHARED
+var (
+	dimStyles = lipgloss.NewStyle().
+		Foreground(dim)
+)
 
-var listTitleStyles = lipgloss.NewStyle().
-	Foreground(magenta).
-	PaddingBottom(1).
-	PaddingTop(1)
+// REPORT LIST
+var (
+	listItemStyles = lipgloss.NewStyle().
+			PaddingRight(1).
+			PaddingLeft(1)
 
-var listHeadingStyles = lipgloss.NewStyle().
-	Foreground(blue)
+	listTitleStyles = lipgloss.NewStyle().
+			Foreground(magenta).
+			PaddingBottom(1).
+			PaddingTop(1)
 
-var dimStyles = lipgloss.NewStyle().
-	Foreground(dim)
+	listHeadingStyles = lipgloss.NewStyle().
+				Foreground(blue)
 
-var titleStyles = lipgloss.NewStyle().
-	PaddingLeft(2)
+	titleStyles = lipgloss.NewStyle().
+			PaddingLeft(2)
+)
+
+// REPORT TABLE
+var (
+	headerStyle = lipgloss.NewStyle().
+			Foreground(blue).
+			Bold(true).
+			Align(lipgloss.Center)
+
+	cellStyle = lipgloss.NewStyle().
+			Padding(0, 1)
+)

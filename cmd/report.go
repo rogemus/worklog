@@ -9,6 +9,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	table bool
+)
+
 var reportCmd = &cobra.Command{
 	Use:   "report",
 	Short: "Show a summary of tasks for the current week",
@@ -29,7 +33,12 @@ var reportCmd = &cobra.Command{
 		listTitleStr := week.RenderTitle()
 		fmt.Println(listTitleStr)
 
-		listStr := internal.RenderAsList(tasks)
-		fmt.Println(listStr)
+		if table {
+			tableStr := internal.RenderAsTable(tasks)
+			fmt.Println(tableStr)
+		} else {
+			listStr := internal.RenderAsList(tasks)
+			fmt.Println(listStr)
+		}
 	},
 }

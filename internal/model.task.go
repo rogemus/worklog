@@ -21,7 +21,7 @@ func (t Task) RenderWithDate() string {
 	titleWithStyles := titleStyles.Render(t.Name)
 	itemWithStyles := fmt.Sprintf("%s | %s | %s", idWithStyles, t.GetDate(), titleWithStyles)
 
-	return itemStyles.Render(itemWithStyles)
+	return listItemStyles.Render(itemWithStyles)
 }
 
 func (t Task) RenderWithHours() string {
@@ -29,7 +29,7 @@ func (t Task) RenderWithHours() string {
 	titleWithStyles := titleStyles.Render(t.Name)
 	itemWithStyles := fmt.Sprintf("%s | %s |%s", idWithStyles, dimStyles.Render(t.GetHour()), titleWithStyles)
 
-	return itemStyles.Render(itemWithStyles)
+	return listItemStyles.Render(itemWithStyles)
 }
 
 func (t Task) Render() string {
@@ -37,7 +37,7 @@ func (t Task) Render() string {
 	titleWithStyles := titleStyles.Render(t.Name)
 	itemWithStyles := fmt.Sprintf("%s%s", idWithStyles, titleWithStyles)
 
-	return itemStyles.Render(itemWithStyles)
+	return listItemStyles.Render(itemWithStyles)
 }
 
 func (t Task) GetDate() string {
