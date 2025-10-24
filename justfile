@@ -13,3 +13,6 @@ install: setup build
   @echo "Install Successfull 🎉!"
   @echo "Run 'tempocli help' to see all availabe options.\n"
 
+uninstall:
+  @echo "Uninstalling..."
+  rm $HOME/go/bin/tempocli
