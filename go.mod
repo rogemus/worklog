@@ -1,4 +1,4 @@
-module tempocli
+module worklog
 
 go 1.25.0
 

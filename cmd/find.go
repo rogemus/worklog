@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"tempocli/internal"
+	"worklog/internal"
 
 	"github.com/spf13/cobra"
 )

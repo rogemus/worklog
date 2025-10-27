@@ -1,6 +1,6 @@
 package cmd
 
-import "tempocli/internal"
+import "worklog/internal"
 
 var db *internal.DB
 

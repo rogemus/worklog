@@ -3,7 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"tempocli/internal"
+	"worklog/internal"
 	"time"
 
 	"github.com/spf13/cobra"

@@ -7,9 +7,9 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "tempocli",
+	Use:   "worklog",
 	Short: "Log and manage weekly tasks from the command line",
-	Long: `tempocli is a lightweight CLI tool for tracking what you work on during the week.
+	Long: `worklog is a lightweight CLI tool for tracking what you work on during the week.
 	It lets you quickly add, edit, remove, and report tasks, helping you stay organized and reflect on your weekly progress.`,
 }
 

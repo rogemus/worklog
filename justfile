@@ -4,15 +4,15 @@ setup:
 
 build: setup
   @echo "Builing app..."
-  go build -o tempocli 
+  go build -o worklog 
   @echo "Build Successfull 🎉!"
 
 install: setup build
-  @echo "Installing..."
+  @echo "Installing..."™
   go install
   @echo "Install Successfull 🎉!"
-  @echo "Run 'tempocli help' to see all availabe options.\n"
+  @echo "Run 'worklog help' to see all availabe options.\n"
 
 uninstall:
   @echo "Uninstalling..."
-  rm $HOME/go/bin/tempocli
+  rm $HOME/go/bin/worklog

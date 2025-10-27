@@ -7,7 +7,7 @@ import (
 	"slices"
 )
 
-var DB_FILE_PATH = "./db.json"
+var DB_FILE_PATH = "~/.config/worklog/db.json"
 
 type DB struct {
 	path string

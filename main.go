@@ -1,8 +1,8 @@
 package main
 
 import (
-	"tempocli/cmd"
-	"tempocli/internal"
+	"worklog/cmd"
+	"worklog/internal"
 )
 
 type Config struct {
