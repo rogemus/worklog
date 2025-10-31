@@ -7,15 +7,28 @@ import (
 	"slices"
 )
 
-var DB_FILE_PATH = "~/.config/worklog/db.json"
+var DB_FILE_PATH = ".config/.worklog"
+var DB_FILE_NAME = "db.json"
 
 type DB struct {
-	path string
+	path     string
+	fileName string
+}
+
+func (db DB) GetPath() string {
+	dirname, err := os.UserHomeDir()
+
+	if err != nil {
+		dirname = "."
+	}
+
+	return dirname + "/" + db.path + "/" + db.fileName
 }
 
 func NewDb() *DB {
 	db := &DB{
-		path: DB_FILE_PATH,
+		path:     DB_FILE_PATH,
+		fileName: DB_FILE_NAME,
 	}
 
 	err := db.createDBfile()
@@ -162,11 +175,31 @@ func (db *DB) FindTasksForWeek(weekRange WeekRange) ([]Task, error) {
 	return tasks, nil
 }
 
+func (db *DB) createDBdir() error {
+	dirname, err := os.UserHomeDir()
+
+	if err != nil {
+		return err
+	}
+
+	err = os.MkdirAll(dirname+"/"+db.path, 0755)
+	if err != nil {
+		return ErrorCannotCreateDBdir
+	}
+
+	return nil
+}
+
 func (db *DB) createDBfile() error {
 	schema := DBSchema{LastIndex: 0, Tasks: []Task{}}
 
-	if _, err := os.Stat(db.path); errors.Is(err, os.ErrNotExist) {
-		file, err := os.Create(db.path)
+	if _, err := os.Stat(db.GetPath()); errors.Is(err, os.ErrNotExist) {
+		err := db.createDBdir()
+		if err != nil {
+			return ErrorCannotCreateDBdir
+		}
+
+		file, err := os.Create(db.GetPath())
 		if err != nil {
 			return ErrorCannotCreateDB
 		}
@@ -186,7 +219,7 @@ func (db *DB) createDBfile() error {
 func (db *DB) readDBFile() (DBSchema, error) {
 	var schema DBSchema
 
-	file, err := os.ReadFile(db.path)
+	file, err := os.ReadFile(db.GetPath())
 	if err != nil {
 		return schema, ErrorCannotReadDB
 	}
@@ -205,7 +238,7 @@ func (db *DB) saveDBFile(schema DBSchema) error {
 		return ErrorCannotStringify
 	}
 
-	err = os.WriteFile(db.path, json, 0644)
+	err = os.WriteFile(db.GetPath(), json, 0644)
 	if err != nil {
 		return ErrorCannotUpdateDB
 	}
