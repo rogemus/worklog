@@ -11,6 +11,7 @@ func InitCommands(database *internal.DB) {
 
 	// NEW
 	newCmd.Flags().StringVar(&date, "date", "", "task date in YYYY-MM-DD format (optional)")
+	newCmd.Flags().BoolVar(&isGit, "git", false, "use git branch as task name")
 	rootCmd.AddCommand(newCmd)
 
 	// REMOVE

@@ -2,14 +2,18 @@ package cmd
 
 import (
 	"fmt"
+	"os/exec"
 	"strings"
-	"worklog/internal"
 	"time"
+	"worklog/internal"
 
 	"github.com/spf13/cobra"
 )
 
-var date string
+var (
+	date  string
+	isGit bool
+)
 
 var newCmd = &cobra.Command{
 	Use:   "new",
@@ -23,7 +27,7 @@ var newCmd = &cobra.Command{
 			taskName = strings.Join(args, " ")
 		}
 
-		if taskName == "" {
+		if taskName == "" && !isGit {
 			fmt.Println("Error: No input text provided")
 			return
 		}
@@ -37,6 +41,39 @@ var newCmd = &cobra.Command{
 			}
 
 			taskDate = parsedDate
+		}
+
+		if isGit {
+			cmd := exec.Command("git", "rev-parse", "--is-inside-work-tree")
+			cmdOutput, err := cmd.Output()
+
+			if err != nil {
+				fmt.Printf("%v\n", err)
+				fmt.Println("Error: not in git repo")
+				return
+			}
+
+			if strings.TrimSpace(string(cmdOutput)) != "true" {
+				fmt.Println("Error: not in git repo")
+				return
+			}
+
+			cmd = exec.Command("git", "rev-parse", "--abbrev-ref", "HEAD")
+			cmdOutput, err = cmd.Output()
+			branchName := strings.TrimSpace(string(cmdOutput))
+
+			if err != nil {
+				fmt.Printf("%v\n", err)
+				fmt.Println("Error: not in git repo")
+				return
+			}
+
+			if branchName == "main" || branchName == "master" {
+				fmt.Println("Error: cannot use `main`/`master` as task name")
+				return
+			}
+
+			taskName = branchName
 		}
 
 		newTask, err := db.AddTask(internal.NewTask(taskName, taskDate, nil))
