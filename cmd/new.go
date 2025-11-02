@@ -28,7 +28,7 @@ var newCmd = &cobra.Command{
 		}
 
 		if taskName == "" && !isGit {
-			fmt.Println("Error: No input text provided")
+			fmt.Printf("%s\n", internal.ErrorEmptyName.Error())
 			return
 		}
 
@@ -36,7 +36,7 @@ var newCmd = &cobra.Command{
 			parsedDate, err := time.Parse("2006-01-02", date)
 
 			if err != nil {
-				fmt.Println("Error: Invalid task date format, using current day as task date")
+				fmt.Printf("%s\n", internal.ErrorInvalidDate)
 				return
 			}
 
@@ -48,13 +48,12 @@ var newCmd = &cobra.Command{
 			cmdOutput, err := cmd.Output()
 
 			if err != nil {
-				fmt.Printf("%v\n", err)
-				fmt.Println("Error: not in git repo")
+				fmt.Printf("%s\n", err.Error())
 				return
 			}
 
 			if strings.TrimSpace(string(cmdOutput)) != "true" {
-				fmt.Println("Error: not in git repo")
+				fmt.Printf("%s\n", internal.ErrorNotInGitRepo.Error())
 				return
 			}
 
@@ -63,13 +62,12 @@ var newCmd = &cobra.Command{
 			branchName := strings.TrimSpace(string(cmdOutput))
 
 			if err != nil {
-				fmt.Printf("%v\n", err)
-				fmt.Println("Error: not in git repo")
+				fmt.Printf("%s\n", internal.ErrorNotInGitRepo.Error())
 				return
 			}
 
 			if branchName == "main" || branchName == "master" {
-				fmt.Println("Error: cannot use `main`/`master` as task name")
+				fmt.Printf("%s\n", internal.ErrorMainBranch.Error())
 				return
 			}
 
@@ -78,7 +76,7 @@ var newCmd = &cobra.Command{
 
 		newTask, err := db.AddTask(internal.NewTask(taskName, taskDate, nil))
 		if err != nil {
-			fmt.Println("Error: cannot create task", err)
+			fmt.Printf("%s\n", err.Error())
 			return
 		}
 

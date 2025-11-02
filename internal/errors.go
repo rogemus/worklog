@@ -13,7 +13,9 @@ var ErrorCannotStringify = errors.New("Cannot convert DB struct to string")
 var ErrorNoTask = errors.New("No task found")
 var ErrorNoTasks = errors.New("No tasks found")
 var ErrorNoTaskToUpdate = errors.New("No task to update")
+var ErrorInvalidDate = errors.New("Invalid task date format, use YYYY-MM-DD format")
+var ErrorEmptyName = errors.New("No name provided")
 
 var ErrorNotInGitRepo = errors.New("Command was not run in git repo")
- 
+
 var ErrorMainBranch = errors.New("Cannot use `main`/`master` as task name")
