@@ -27,7 +27,7 @@ func (t Task) RenderWithDate() string {
 func (t Task) RenderWithHours() string {
 	idWithStyles := dimStyles.Render(fmt.Sprintf("[%s]", strconv.Itoa(int(t.Id))))
 	titleWithStyles := titleStyles.Render(t.Name)
-	itemWithStyles := fmt.Sprintf("%s | %s |%s", idWithStyles, dimStyles.Render(t.GetHour()), titleWithStyles)
+	itemWithStyles := fmt.Sprintf("%s | %s |%s", idWithStyles, dimStyles.Render(t.GetHour()), tit)
 
 	return listItemStyles.Render(itemWithStyles)
 }

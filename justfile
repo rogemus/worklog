@@ -16,3 +16,7 @@ install: setup build
 uninstall:
   @echo "Uninstalling..."
   rm $HOME/go/bin/worklog
+
+test: 
+  @echo "Running all tests..."
+  go test ./... -v | gocolor
