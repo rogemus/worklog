@@ -3,14 +3,10 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"worklog/internal"
 	"time"
+	"worklog/internal"
 
 	"github.com/spf13/cobra"
-)
-
-var (
-	table bool
 )
 
 var reportCmd = &cobra.Command{
@@ -22,6 +18,7 @@ var reportCmd = &cobra.Command{
 
 		week := internal.NewWeekRange(date)
 		tasks, err := db.FindTasksForWeek(week)
+
 		if err != nil && errors.Is(err, internal.ErrorNoTasks) {
 			fmt.Printf("No tasks for week: [%s - %s]\n", week.Start, week.End)
 			return
@@ -30,15 +27,9 @@ var reportCmd = &cobra.Command{
 			return
 		}
 
-		listTitleStr := week.RenderTitle()
-		fmt.Println(listTitleStr)
+		listTitle := fmt.Sprintf("Tasks for week: %s", week.GetFormatedRange())
+		fmt.Println(listTitle)
 
-		if table {
-			tableStr := internal.RenderAsTable(tasks)
-			fmt.Println(tableStr)
-		} else {
-			listStr := internal.RenderAsList(tasks)
-			fmt.Println(listStr)
-		}
+		internal.RenderAsList(tasks)
 	},
 }

@@ -21,6 +21,5 @@ func InitCommands(database *internal.DB) {
 	rootCmd.AddCommand(dropCmd)
 
 	// REPORT
-	reportCmd.Flags().BoolVar(&table, "table", false, "render report as table")
 	rootCmd.AddCommand(reportCmd)
 }

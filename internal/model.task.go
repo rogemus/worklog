@@ -16,28 +16,20 @@ type Task struct {
 	Tags []Tag     `json:"tags"`
 }
 
-func (t Task) RenderWithDate() string {
-	idWithStyles := dimStyles.Render(fmt.Sprintf("[%s]", strconv.Itoa(int(t.Id))))
-	titleWithStyles := titleStyles.Render(t.Name)
-	itemWithStyles := fmt.Sprintf("%s | %s | %s", idWithStyles, t.GetDate(), titleWithStyles)
-
-	return listItemStyles.Render(itemWithStyles)
+func (t Task) ToStringWithDate() string {
+	return fmt.Sprintf("%s | %s | %s", t.GetFormattedId(), t.GetDate(), t.Name)
 }
 
-func (t Task) RenderWithHours() string {
-	idWithStyles := dimStyles.Render(fmt.Sprintf("[%s]", strconv.Itoa(int(t.Id))))
-	titleWithStyles := titleStyles.Render(t.Name)
-	itemWithStyles := fmt.Sprintf("%s | %s |%s", idWithStyles, dimStyles.Render(t.GetHour()), titleWithStyles)
-
-	return listItemStyles.Render(itemWithStyles)
+func (t Task) ToStringWithHours() string {
+	return fmt.Sprintf("%s | %s | %s", t.GetFormattedId(), t.GetHour(), t.Name)
 }
 
-func (t Task) Render() string {
-	idWithStyles := dimStyles.Render(fmt.Sprintf("[%s]", strconv.Itoa(int(t.Id))))
-	titleWithStyles := titleStyles.Render(t.Name)
-	itemWithStyles := fmt.Sprintf("%s%s", idWithStyles, titleWithStyles)
+func (t Task) ToString() string {
+	return fmt.Sprintf("%s %s", t.GetFormattedId(), t.Name)
+}
 
-	return listItemStyles.Render(itemWithStyles)
+func (t Task) GetFormattedId() string {
+	return fmt.Sprintf("[%s]", strconv.Itoa(int(t.Id)))
 }
 
 func (t Task) GetDate() string {

@@ -16,20 +16,16 @@ func (w *WeekRange) CalculateWeekRange(date time.Time) {
 		date = date.AddDate(0, 0, -1)
 	}
 
+	date = time.Date(date.Year(), date.Month(), date.Day(), 0, 0, 0, 1, time.UTC)
+
 	w.Start = date
 	w.End = date.AddDate(0, 0, 6)
 }
 
 func (w WeekRange) GetFormatedRange() string {
 	startFormatted := w.Start.Format("02-01-2006")
-	endFormatted := w.End.Format("02-01-2005")
+	endFormatted := w.End.Format("02-01-2006")
 	return fmt.Sprintf("[%s - %s]", startFormatted, endFormatted)
-}
-
-func (w WeekRange) RenderTitle() string {
-	title := fmt.Sprintf("Tasks for week: %s", w.GetFormatedRange())
-
-	return listTitleStyles.Render(title)
 }
 
 func NewWeekRange(date time.Time) WeekRange {

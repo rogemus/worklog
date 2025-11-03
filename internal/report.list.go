@@ -1,9 +1,8 @@
 package internal
 
 import (
+	"fmt"
 	"slices"
-
-	"github.com/charmbracelet/lipgloss/list"
 )
 
 type TaskGroup struct {
@@ -19,7 +18,7 @@ func (g *TaskGroup) MatchDateStr(dateStr string) bool {
 	return false
 }
 
-func RenderAsList(tasks []Task) string {
+func RenderAsList(tasks []Task) {
 	var groups []TaskGroup
 
 	for _, task := range tasks {
@@ -42,19 +41,11 @@ func RenderAsList(tasks []Task) string {
 		}
 	}
 
-	l := list.New().
-		Enumerator(func(items list.Items, index int) string { return "" })
-
 	for _, group := range groups {
-		tasksList := list.New().
-			Enumerator(func(items list.Items, index int) string { return "" })
+		fmt.Printf("%s\n", group.dateStr)
 
 		for _, task := range group.tasks {
-			tasksList.Item(task.RenderWithHours())
+			fmt.Printf("    %s", task.ToStringWithHours())
 		}
-
-		l.Items(listHeadingStyles.Render(group.dateStr), tasksList, "")
 	}
-
-	return l.String()
 }

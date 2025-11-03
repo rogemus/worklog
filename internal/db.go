@@ -7,7 +7,7 @@ import (
 	"slices"
 )
 
-var DB_FILE_PATH = ".config/.worklog"
+var DB_FILE_PATH = ".config/worklog"
 var DB_FILE_NAME = "db.json"
 
 type DB struct {
@@ -158,6 +158,7 @@ func (db *DB) FindTasksByName(query string) ([]Task, error) {
 func (db *DB) FindTasksForWeek(weekRange WeekRange) ([]Task, error) {
 	var tasks []Task
 	schema, err := db.readDBFile()
+
 	if err != nil {
 		return nil, err
 	}
