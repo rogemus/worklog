@@ -16,16 +16,49 @@ type Task struct {
 	Tags    []string // optional
 }
 
+func (t Task) GetFormatted() string {
+
+	formatted := fmt.Sprintf(
+		"%s: [%s] %s",
+		t.GetFormattedId(),
+		t.GetFormattedCreated(),
+		t.Name,
+	)
+
+	tags := t.GetFormattedTags()
+	issueId := t.GetFormattedIssueId()
+	repo := t.GetFormattedRepo()
+	branch := t.GetFormattedBranch()
+
+	if tags != "" {
+		formatted = formatted + " " + tags
+	}
+
+	if issueId != "" {
+		formatted = formatted + " " + issueId
+	}
+
+	if repo != "" {
+		formatted = formatted + " " + repo
+	}
+
+	if branch != "" {
+		formatted = formatted + " " + branch
+	}
+
+	return formatted
+}
+
 func (t Task) GetFormattedTags() string {
 	if len(t.Tags) == 0 {
 		return ""
 	}
 
-	return fmt.Sprintf("tags:%s", strings.Join(t.Tags, ","))
+	return fmt.Sprintf("@tags:%s", strings.Join(t.Tags, ","))
 }
 
 func (t Task) GetFormattedId() string {
-	return fmt.Sprintf("%04d:", t.ID)
+	return fmt.Sprintf("%03d", t.ID)
 }
 
 func (t Task) GetFormattedCreated() string {
