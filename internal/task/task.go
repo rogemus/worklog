@@ -16,8 +16,7 @@ type Task struct {
 	Tags    []string // optional
 }
 
-func (t Task) GetFormatted() string {
-
+func (t Task) String() string {
 	formatted := fmt.Sprintf(
 		"%s: [%s] %s",
 		t.GetFormattedId(),
