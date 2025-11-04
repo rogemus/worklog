@@ -5,15 +5,35 @@ import (
 	"time"
 )
 
-// 0001: [Sun, 31 Dec 1899 00:00:00 GMT] "XXX-123 this is my task" @tags:feat @issue_id:XXX-123 @repo:<name> @branch:feat/XXX-123-this-is-my-task
+// 0001: [Sun, 31 Dec 1899 00:00:00 GMT] XXX-123 this is my task @tags:feat @issue_id:XXX-123 @repo:<name> @branch:feat/XXX-123-this-is-my-task
 func TestParse(t *testing.T) {
 	tests := map[string]struct {
 		in  string
 		out Task
 	}{
 		"basic task without tags, repo, branch": {
-			in:  `001: [2006-01-02 15:04:00] ABC-123 "this is my task"`,
-			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC)},
+			in:  `001: [2006-01-02 15:04:00] Task Name`,
+			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name"},
+		},
+		"task with tags": {
+			in:  `001: [2006-01-02 15:04:00] Task Name @tags:feat,ui`,
+			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Tags: []string{"feat", "ui"}},
+		},
+		"task with branch": {
+			in:  `001: [2006-01-02 15:04:00] Task Name @branch:master`,
+			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master"},
+		},
+		"task with repo": {
+			in:  `001: [2006-01-02 15:04:00] Task Name @repo:super-repo @branch:master`,
+			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master", Repo: "super-repo"},
+		},
+		"task with branch and tags": {
+			in:  `001: [2006-01-02 15:04:00] Task Name @tags:feat,ui @branch:master`,
+			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master", Tags: []string{"feat", "ui"}},
+		},
+		"task with branch, repo, tags": {
+			in:  `001: [2006-01-02 15:04:00] Task Name @tags:feat,ui @repo:super-repo @branch:master`,
+			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master", Repo: "super-repo", Tags: []string{"feat", "ui"}},
 		},
 	}
 
@@ -26,6 +46,7 @@ func TestParse(t *testing.T) {
 			AssetEqual(t, task.Branch, test.out.Branch)
 			AssetEqual(t, task.Repo, test.out.Repo)
 			AssetEqual(t, task.IssueId, test.out.IssueId)
+			AssetEqualSlice(t, task.Tags, test.out.Tags)
 		})
 	}
 }
@@ -35,5 +56,21 @@ func AssetEqual[T comparable](t *testing.T, got, want T) {
 
 	if got != want {
 		t.Errorf("got [%v], want [%v]", got, want)
+	}
+}
+
+func AssetEqualSlice[T comparable](t *testing.T, got, want []T) {
+	t.Helper()
+
+	if len(got) != len(want) {
+		t.Errorf("got [%v], want [%v]", got, want)
+		return
+	}
+
+	for i := range want {
+		if want[i] != got[i] {
+			t.Errorf("got [%v], want [%v]", got, want)
+			return
+		}
 	}
 }

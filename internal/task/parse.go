@@ -1,53 +1,53 @@
 package task
 
 import (
-	// "fmt"
 	"fmt"
 	"strconv"
 	"strings"
-	"text/scanner"
 	"time"
 )
 
-// 001: [21-10-1994 21:37] "XXX-123 this is my task" @tags:feat @issue_id:XXX-123 @repo:<name> @branch:feat/XXX-123-this-is-my-task
 func StrToTask(text string) (Task, error) {
-	var task Task
-
-	var s scanner.Scanner
-	s.Init(strings.NewReader(text))
-	s.Filename = "task"
+	var (
+		task   Task
+		branch string
+		repo   string
+		tags   []string
+	)
 
 	id := text[0:3]
 	created := text[6:25]
 	text = text[26:]
 
-	var (
-		col int
-		// partStart int
-		// partEnd   int
-	)
-
-	for tok := s.Scan(); tok != scanner.EOF; tok = s.Scan() {
-		// txt := s.TokenText()
-
-		// switch txt {
-		// case "[":
-		// 	partStart = col
-		// case "]":
-		// 	created = text[partStart : col-1]
-		// 	partStart = 0
-		// }
-		col++
+	// find branch part
+	branchPartIndex := strings.Index(text, "@branch:")
+	fmt.Printf("branchPartIndex, [%v]\n", branchPartIndex)
+	if branchPartIndex != -1 {
+		branch = strings.TrimSpace(
+			strings.Replace(text[branchPartIndex:], "@branch:", "", 1),
+		)
+		text = text[:branchPartIndex]
 	}
 
-	// var parts []string
-	// // id
-	// // created
-	// // name
-	// // tags
-	// // issue_id
-	// // repo
-	// // branch
+	// find repo part
+	repoPartIndex := strings.Index(text, "@repo:")
+	if repoPartIndex != -1 {
+		repo = strings.TrimSpace(
+			strings.Replace(text[repoPartIndex:], "@repo:", "", 1),
+		)
+		text = text[:repoPartIndex]
+	}
+
+	// find tags part
+	tagsPartIndex := strings.Index(text, "@tags:")
+	if tagsPartIndex != -1 {
+		tags = strings.Split(
+			strings.TrimSpace(strings.Replace(text[tagsPartIndex:], "@tags:", "", 1)),
+			",",
+		)
+
+		text = text[:tagsPartIndex]
+	}
 
 	parsedId, err := strconv.ParseInt(id, 10, 10)
 	if err != nil {
@@ -62,6 +62,10 @@ func StrToTask(text string) (Task, error) {
 	task = Task{
 		ID:      int(parsedId),
 		Created: parsedCreated,
+		Name:    text,
+		Tags:    tags,
+		Branch:  branch,
+		Repo:    repo,
 	}
 
 	return task, nil
