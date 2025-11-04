@@ -9,10 +9,11 @@ import (
 
 func StrToTask(text string) (Task, error) {
 	var (
-		task   Task
-		branch string
-		repo   string
-		tags   []string
+		task    Task
+		branch  string
+		repo    string
+		issueId string
+		tags    []string
 	)
 
 	id := text[0:3]
@@ -36,6 +37,15 @@ func StrToTask(text string) (Task, error) {
 			strings.Replace(text[repoPartIndex:], "@repo:", "", 1),
 		)
 		text = text[:repoPartIndex]
+	}
+
+	// find issueId part
+	issueIdPartIndex := strings.Index(text, "@issue_id:")
+	if issueIdPartIndex != -1 {
+		issueId = strings.TrimSpace(
+			strings.Replace(text[issueIdPartIndex:], "@issue_id:", "", 1),
+		)
+		text = text[:issueIdPartIndex]
 	}
 
 	// find tags part
@@ -66,6 +76,7 @@ func StrToTask(text string) (Task, error) {
 		Tags:    tags,
 		Branch:  branch,
 		Repo:    repo,
+		IssueId: issueId,
 	}
 
 	return task, nil

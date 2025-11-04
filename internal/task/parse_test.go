@@ -35,6 +35,10 @@ func TestParse(t *testing.T) {
 			in:  `001: [2006-01-02 15:04:00] Task Name @tags:feat,ui @repo:super-repo @branch:master`,
 			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master", Repo: "super-repo", Tags: []string{"feat", "ui"}},
 		},
+		"task with branch, repo, issue_id, tags": {
+			in:  `001: [2006-01-02 15:04:00] Task Name @tags:feat,ui @issue_id:XXX-123 @repo:super-repo @branch:master`,
+			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), IssueId: "XXX-123", Name: "Task Name", Branch: "master", Repo: "super-repo", Tags: []string{"feat", "ui"}},
+		},
 	}
 
 	for testName, test := range tests {
