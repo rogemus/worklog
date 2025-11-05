@@ -98,3 +98,19 @@ func (t Task) GetFormattedRepo() string {
 
 	return fmt.Sprintf("@repo:%s", t.Repo)
 }
+
+func (t Task) MatchId(id int) bool {
+	if t.ID == id {
+		return true
+	}
+
+	return false
+}
+
+func (t Task) MatchName(query string) bool {
+	if strings.Contains(t.Name, query) {
+		return true
+	}
+
+	return false
+}
