@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	db := database.NewDB(".")
+	db := database.NewDB("")
 	cmd.InitCommands(db)
 
 	cmd.Execute()
