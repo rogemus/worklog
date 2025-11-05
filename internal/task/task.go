@@ -16,6 +16,17 @@ type Task struct {
 	Tags    []string // optional
 }
 
+func NewTask(text string) Task {
+	var task Task
+
+	task, err := StrToTask(text)
+	if err != nil {
+		return Task{}
+	}
+
+	return task
+}
+
 func (t Task) String() string {
 	formatted := fmt.Sprintf(
 		"%s: [%s] %s",

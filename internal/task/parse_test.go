@@ -3,6 +3,7 @@ package task
 import (
 	"testing"
 	"time"
+	"worklog/internal/utils"
 )
 
 // 0001: [Sun, 31 Dec 1899 00:00:00 GMT] XXX-123 this is my task @tags:feat @issue_id:XXX-123 @repo:<name> @branch:feat/XXX-123-this-is-my-task
@@ -45,12 +46,12 @@ func TestParse(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			task, _ := StrToTask(test.in)
 
-			AssetEqual(t, task.ID, test.out.ID)
-			AssetEqual(t, task.Created, test.out.Created)
-			AssetEqual(t, task.Branch, test.out.Branch)
-			AssetEqual(t, task.Repo, test.out.Repo)
-			AssetEqual(t, task.IssueId, test.out.IssueId)
-			AssetEqualSlice(t, task.Tags, test.out.Tags)
+			utils.AssetEqual(t, task.ID, test.out.ID)
+			utils.AssetEqual(t, task.Created, test.out.Created)
+			utils.AssetEqual(t, task.Branch, test.out.Branch)
+			utils.AssetEqual(t, task.Repo, test.out.Repo)
+			utils.AssetEqual(t, task.IssueId, test.out.IssueId)
+			utils.AssetEqualSlice(t, task.Tags, test.out.Tags)
 		})
 	}
 }

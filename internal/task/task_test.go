@@ -3,6 +3,7 @@ package task
 import (
 	"testing"
 	"time"
+	"worklog/internal/utils"
 )
 
 func TestTest(t *testing.T) {
@@ -44,7 +45,7 @@ func TestTest(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			taskStr := test.in.String()
 
-			AssetEqual(t, taskStr, test.out)
+			utils.AssetEqual(t, taskStr, test.out)
 		})
 	}
 }
