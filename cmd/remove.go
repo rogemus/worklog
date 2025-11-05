@@ -23,7 +23,7 @@ var removeCmd = &cobra.Command{
 			return
 		}
 
-		err = db.RemoveTask(int16(taskId))
+		err = db.RemoveTask(taskId)
 		if err != nil {
 			fmt.Println("Error: cannot remove task\n", err)
 			return

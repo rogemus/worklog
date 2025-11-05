@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"bufio"
@@ -89,7 +89,7 @@ func (db *DB) readDBFile() ([]task.Task, error) {
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
-		task := task.NewTask(scanner.Text())
+		task := task.NewTaskFromStr(scanner.Text())
 
 		if task.Name != "" {
 			tasks = append(tasks, task)

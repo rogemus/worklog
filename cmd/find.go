@@ -31,7 +31,7 @@ var findCmd = &cobra.Command{
 		}
 
 		for _, task := range tasks {
-			fmt.Printf("%s [%d] %s\n", task.Date, task.Id, task.Name)
+			fmt.Printf("%s [%d] %s\n", task.Created, task.ID, task.Name)
 		}
 	},
 }

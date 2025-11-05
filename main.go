@@ -2,15 +2,11 @@ package main
 
 import (
 	"worklog/cmd"
-	"worklog/internal"
+	"worklog/internal/database"
 )
 
-type Config struct {
-	DB internal.DB
-}
-
 func main() {
-	db := internal.NewDb()
+	db := database.NewDB(".")
 	cmd.InitCommands(db)
 
 	cmd.Execute()

@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"strings"
 	"time"
-	"worklog/internal"
+	"worklog/internal/task"
 
 	"github.com/spf13/cobra"
 )
@@ -28,7 +28,7 @@ var newCmd = &cobra.Command{
 		}
 
 		if taskName == "" && !isGit {
-			fmt.Printf("%s\n", internal.ErrorEmptyName.Error())
+			fmt.Printf("%s\n", task.ErrorEmptyName.Error())
 			return
 		}
 
@@ -36,7 +36,7 @@ var newCmd = &cobra.Command{
 			parsedDate, err := time.Parse("2006-01-02", date)
 
 			if err != nil {
-				fmt.Printf("%s\n", internal.ErrorInvalidDate)
+				fmt.Printf("%s\n", task.ErrorParseInvalidCreatedDate)
 				return
 			}
 
@@ -53,7 +53,7 @@ var newCmd = &cobra.Command{
 			}
 
 			if strings.TrimSpace(string(cmdOutput)) != "true" {
-				fmt.Printf("%s\n", internal.ErrorNotInGitRepo.Error())
+				fmt.Printf("%s\n", task.ErrorNotInGitRepo.Error())
 				return
 			}
 
@@ -62,24 +62,24 @@ var newCmd = &cobra.Command{
 			branchName := strings.TrimSpace(string(cmdOutput))
 
 			if err != nil {
-				fmt.Printf("%s\n", internal.ErrorNotInGitRepo.Error())
+				fmt.Printf("%s\n", task.ErrorNotInGitRepo.Error())
 				return
 			}
 
 			if branchName == "main" || branchName == "master" {
-				fmt.Printf("%s\n", internal.ErrorMainBranch.Error())
+				fmt.Printf("%s\n", task.ErrorMainBranch.Error())
 				return
 			}
 
 			taskName = branchName
 		}
 
-		newTask, err := db.AddTask(internal.NewTask(taskName, taskDate, nil))
+		newTask, err := db.AddTask(task.NewTask(taskName, taskDate, nil))
 		if err != nil {
 			fmt.Printf("%s\n", err.Error())
 			return
 		}
 
-		fmt.Printf("Success: Task created id [%d] [%s]\n", newTask.Id, newTask.Name)
+		fmt.Printf("Success: Task created id [%d] [%s]\n", newTask.ID, newTask.Name)
 	},
 }

@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"time"
-	"worklog/internal"
+	"worklog/internal/database"
+	"worklog/internal/reports"
+	"worklog/internal/weekRange"
 
 	"github.com/spf13/cobra"
 )
@@ -16,10 +18,10 @@ var reportCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		date := time.Now()
 
-		week := internal.NewWeekRange(date)
+		week := weekRange.NewWeekRange(date)
 		tasks, err := db.FindTasksForWeek(week)
 
-		if err != nil && errors.Is(err, internal.ErrorNoTasks) {
+		if err != nil && errors.Is(err, database.ErrorNoTasks) {
 			fmt.Printf("No tasks for week: [%s - %s]\n", week.Start, week.End)
 			return
 		} else if err != nil {
@@ -30,6 +32,6 @@ var reportCmd = &cobra.Command{
 		listTitle := fmt.Sprintf("Tasks for week: %s", week.GetFormatedRange())
 		fmt.Println(listTitle)
 
-		internal.RenderAsList(tasks)
+		reports.RenderAsList(tasks)
 	},
 }

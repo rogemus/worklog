@@ -16,7 +16,16 @@ type Task struct {
 	Tags    []string // optional
 }
 
-func NewTask(text string) Task {
+func NewTask(name string, date time.Time, tags []string) Task {
+	return Task{
+		ID:      -1,
+		Name:    name,
+		Created: date,
+		Tags:    tags,
+	}
+}
+
+func NewTaskFromStr(text string) Task {
 	var task Task
 
 	task, err := StrToTask(text)

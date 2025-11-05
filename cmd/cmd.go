@@ -1,11 +1,11 @@
 package cmd
 
-import "worklog/internal"
+import "worklog/internal/database"
 
-var db *internal.DB
+var db *database.DB
 
-func InitCommands(database *internal.DB) {
-	db = database
+func InitCommands(datab *database.DB) {
+	db = datab
 	// FIND
 	rootCmd.AddCommand(findCmd)
 
