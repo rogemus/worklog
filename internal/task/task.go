@@ -79,6 +79,14 @@ func (t Task) GetFormattedId() string {
 	return fmt.Sprintf("%03d", t.ID)
 }
 
+func (t Task) GetFormattedCreatedTime() string {
+	return t.Created.Format(time.TimeOnly)
+}
+
+func (t Task) GetFormattedCreatedDate() string {
+	return t.Created.Format(time.DateOnly)
+}
+
 func (t Task) GetFormattedCreated() string {
 	return t.Created.Format(time.DateTime)
 }

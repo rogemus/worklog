@@ -88,6 +88,7 @@ func (db *DB) readDBFile() ([]task.Task, error) {
 
 	scanner := bufio.NewScanner(file)
 	lineNumber := 0
+
 	for scanner.Scan() {
 		task := task.NewTaskFromStr(scanner.Text(), lineNumber)
 

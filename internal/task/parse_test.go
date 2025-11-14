@@ -6,7 +6,6 @@ import (
 	"worklog/internal/utils"
 )
 
-// [2006-01-02 15:04:00] Task Name @tags:feat,ui @issue_id:XXX-123 @repo:super-repo @branch:master
 func TestParse(t *testing.T) {
 	tests := map[string]struct {
 		in  string

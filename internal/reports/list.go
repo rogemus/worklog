@@ -23,7 +23,7 @@ func RenderAsList(tasks []task.Task) {
 	var groups []TaskGroup
 
 	for _, t := range tasks {
-		dateStr := t.GetFormattedCreated()
+		dateStr := t.GetFormattedCreatedDate()
 		idx := slices.IndexFunc(groups, func(g TaskGroup) bool {
 			return g.MatchDateStr(dateStr)
 		})
@@ -46,7 +46,7 @@ func RenderAsList(tasks []task.Task) {
 		fmt.Printf("%s\n", group.dateStr)
 
 		for _, task := range group.tasks {
-			fmt.Printf("    %s", task.Name)
+			fmt.Printf("   [%s] %s\n", task.GetFormattedCreatedTime(), task.Name)
 		}
 	}
 }
