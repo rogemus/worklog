@@ -1,12 +1,11 @@
 package task
 
 import (
-	"strconv"
 	"strings"
 	"time"
 )
 
-func StrToTask(text string) (Task, error) {
+func StrToTask(text string, id int) (Task, error) {
 	var (
 		task    Task
 		branch  string
@@ -15,9 +14,8 @@ func StrToTask(text string) (Task, error) {
 		tags    []string
 	)
 
-	id := text[0:3]
-	created := text[6:25]
-	text = text[26:]
+	created := text[1:20]
+	text = text[21:]
 
 	// find branch part
 	branchPartIndex := strings.Index(text, "@branch:")
@@ -57,18 +55,13 @@ func StrToTask(text string) (Task, error) {
 		text = text[:tagsPartIndex]
 	}
 
-	parsedId, err := strconv.ParseInt(id, 10, 10)
-	if err != nil {
-		return Task{}, ErrorParseInvalidId
-	}
-
 	parsedCreated, err := time.Parse(time.DateTime, created)
 	if err != nil {
 		return Task{}, ErrorParseInvalidCreatedDate
 	}
 
 	task = Task{
-		ID:      int(parsedId),
+		ID:      id,
 		Created: parsedCreated,
 		Name:    text,
 		Tags:    tags,

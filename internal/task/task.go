@@ -25,10 +25,10 @@ func NewTask(name string, date time.Time, tags []string) Task {
 	}
 }
 
-func NewTaskFromStr(text string) Task {
+func NewTaskFromStr(text string, lineNumber int) Task {
 	var task Task
 
-	task, err := StrToTask(text)
+	task, err := StrToTask(text, lineNumber)
 	if err != nil {
 		return Task{}
 	}
@@ -38,8 +38,7 @@ func NewTaskFromStr(text string) Task {
 
 func (t Task) String() string {
 	formatted := fmt.Sprintf(
-		"%s: [%s] %s",
-		t.GetFormattedId(),
+		"[%s] %s",
 		t.GetFormattedCreated(),
 		t.Name,
 	)

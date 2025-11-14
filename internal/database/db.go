@@ -87,13 +87,15 @@ func (db *DB) readDBFile() ([]task.Task, error) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
-
+	lineNumber := 0
 	for scanner.Scan() {
-		task := task.NewTaskFromStr(scanner.Text())
+		task := task.NewTaskFromStr(scanner.Text(), lineNumber)
 
 		if task.Name != "" {
 			tasks = append(tasks, task)
 		}
+
+		lineNumber += 1
 	}
 
 	if err := scanner.Err(); err != nil {

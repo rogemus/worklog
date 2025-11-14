@@ -6,47 +6,47 @@ import (
 	"worklog/internal/utils"
 )
 
-// 0001: [Sun, 31 Dec 1899 00:00:00 GMT] XXX-123 this is my task @tags:feat @issue_id:XXX-123 @repo:<name> @branch:feat/XXX-123-this-is-my-task
+// [2006-01-02 15:04:00] Task Name @tags:feat,ui @issue_id:XXX-123 @repo:super-repo @branch:master
 func TestParse(t *testing.T) {
 	tests := map[string]struct {
 		in  string
 		out Task
 	}{
 		"basic task without tags, repo, branch": {
-			in:  `001: [2006-01-02 15:04:00] Task Name`,
-			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name"},
+			in:  `[2006-01-02 15:04:00] Task Name`,
+			out: Task{Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name"},
 		},
 		"task with tags": {
-			in:  `001: [2006-01-02 15:04:00] Task Name @tags:feat,ui`,
-			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Tags: []string{"feat", "ui"}},
+			in:  `[2006-01-02 15:04:00] Task Name @tags:feat,ui`,
+			out: Task{Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Tags: []string{"feat", "ui"}},
 		},
 		"task with branch": {
-			in:  `001: [2006-01-02 15:04:00] Task Name @branch:master`,
-			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master"},
+			in:  `[2006-01-02 15:04:00] Task Name @branch:master`,
+			out: Task{Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master"},
 		},
 		"task with repo": {
-			in:  `001: [2006-01-02 15:04:00] Task Name @repo:super-repo @branch:master`,
-			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master", Repo: "super-repo"},
+			in:  `[2006-01-02 15:04:00] Task Name @repo:super-repo @branch:master`,
+			out: Task{Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master", Repo: "super-repo"},
 		},
 		"task with branch and tags": {
-			in:  `001: [2006-01-02 15:04:00] Task Name @tags:feat,ui @branch:master`,
-			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master", Tags: []string{"feat", "ui"}},
+			in:  `[2006-01-02 15:04:00] Task Name @tags:feat,ui @branch:master`,
+			out: Task{Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master", Tags: []string{"feat", "ui"}},
 		},
 		"task with branch, repo, tags": {
-			in:  `001: [2006-01-02 15:04:00] Task Name @tags:feat,ui @repo:super-repo @branch:master`,
-			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master", Repo: "super-repo", Tags: []string{"feat", "ui"}},
+			in:  `[2006-01-02 15:04:00] Task Name @tags:feat,ui @repo:super-repo @branch:master`,
+			out: Task{Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), Name: "Task Name", Branch: "master", Repo: "super-repo", Tags: []string{"feat", "ui"}},
 		},
 		"task with branch, repo, issue_id, tags": {
-			in:  `001: [2006-01-02 15:04:00] Task Name @tags:feat,ui @issue_id:XXX-123 @repo:super-repo @branch:master`,
-			out: Task{ID: 1, Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), IssueId: "XXX-123", Name: "Task Name", Branch: "master", Repo: "super-repo", Tags: []string{"feat", "ui"}},
+			in:  `[2006-01-02 15:04:00] Task Name @tags:feat,ui @issue_id:XXX-123 @repo:super-repo @branch:master`,
+			out: Task{Created: time.Date(2006, 1, 2, 15, 4, 0, 0, time.UTC), IssueId: "XXX-123", Name: "Task Name", Branch: "master", Repo: "super-repo", Tags: []string{"feat", "ui"}},
 		},
 	}
 
 	for testName, test := range tests {
 		t.Run(testName, func(t *testing.T) {
-			task, _ := StrToTask(test.in)
+			task, _ := StrToTask(test.in, 0)
 
-			utils.AssetEqual(t, task.ID, test.out.ID)
+			utils.AssetEqual(t, task.ID, 0)
 			utils.AssetEqual(t, task.Created, test.out.Created)
 			utils.AssetEqual(t, task.Branch, test.out.Branch)
 			utils.AssetEqual(t, task.Repo, test.out.Repo)
