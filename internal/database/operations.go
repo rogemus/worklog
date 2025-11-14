@@ -13,9 +13,8 @@ func (db *DB) AddTask(t task.Task) (task.Task, error) {
 	}
 
 	t.ID = len(tasks) + 1
-	tasks = append(tasks, t)
 
-	if err := db.saveDBFile(tasks); err != nil {
+	if err := db.appendDBFile(t); err != nil {
 		return task.Task{}, err
 	}
 

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"worklog/internal"
+	"worklog/internal/database"
 
 	"github.com/spf13/cobra"
 )
@@ -22,7 +22,7 @@ var findCmd = &cobra.Command{
 		query := strings.Join(args, " ")
 		tasks, err := db.FindTasksByName(query)
 
-		if err != nil && errors.Is(err, internal.ErrorNoTasks) {
+		if err != nil && errors.Is(err, database.ErrorNoTasks) {
 			fmt.Printf("No tasks found for query: %s\n", query)
 			return
 		} else if err != nil {

@@ -1,7 +1,6 @@
 package task
 
 import (
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -22,7 +21,6 @@ func StrToTask(text string) (Task, error) {
 
 	// find branch part
 	branchPartIndex := strings.Index(text, "@branch:")
-	fmt.Printf("branchPartIndex, [%v]\n", branchPartIndex)
 	if branchPartIndex != -1 {
 		branch = strings.TrimSpace(
 			strings.Replace(text[branchPartIndex:], "@branch:", "", 1),

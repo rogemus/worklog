@@ -103,6 +103,25 @@ func (db *DB) readDBFile() ([]task.Task, error) {
 	return tasks, nil
 }
 
+func (db *DB) appendDBFile(task task.Task) error {
+	file, err := os.OpenFile(db.getPath(), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	if err != nil {
+		return ErrorCannotUpdateDB
+	}
+
+	defer file.Close()
+
+	var text string
+
+	text = task.String() + "\n"
+
+	if _, err = file.WriteString(text); err != nil {
+		return ErrorCannotUpdateDB
+	}
+
+	return nil
+}
+
 func (db *DB) saveDBFile(tasks []task.Task) error {
 	file, err := os.OpenFile(db.getPath(), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
