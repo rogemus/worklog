@@ -3,7 +3,9 @@ package database
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"os"
+	"strings"
 	"worklog/internal/task"
 )
 
@@ -87,16 +89,19 @@ func (db *DB) readDBFile() ([]task.Task, error) {
 	defer file.Close()
 
 	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanLines)
 	lineNumber := 0
 
+	// Read line by line
 	for scanner.Scan() {
-		task := task.NewTaskFromStr(scanner.Text(), lineNumber)
+		line := scanner.Text()
+		task := task.NewTaskFromStr(line, lineNumber)
+		fmt.Printf("[%v]", task)
 
 		if task.Name != "" {
 			tasks = append(tasks, task)
+			lineNumber = lineNumber + 1
 		}
-
-		lineNumber += 1
 	}
 
 	if err := scanner.Err(); err != nil {
@@ -107,16 +112,14 @@ func (db *DB) readDBFile() ([]task.Task, error) {
 }
 
 func (db *DB) appendDBFile(task task.Task) error {
-	file, err := os.OpenFile(db.getPath(), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	file, err := os.OpenFile(db.getPath(), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
-		return ErrorCannotUpdateDB
+		return ErrorCannotReadDB
 	}
 
 	defer file.Close()
 
-	var text string
-
-	text = task.String() + "\n"
+	text := task.ToString() + "\n"
 
 	if _, err = file.WriteString(text); err != nil {
 		return ErrorCannotUpdateDB
@@ -126,20 +129,14 @@ func (db *DB) appendDBFile(task task.Task) error {
 }
 
 func (db *DB) saveDBFile(tasks []task.Task) error {
-	file, err := os.OpenFile(db.getPath(), os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
-	if err != nil {
-		return ErrorCannotUpdateDB
-	}
-
-	defer file.Close()
-
-	var text string
+	var tasksStr []string
 
 	for _, task := range tasks {
-		text = text + task.String() + "\n"
+		tasksStr = append(tasksStr, task.ToString())
 	}
+	text := ([]byte)(strings.Join(tasksStr, "\n"))
 
-	if _, err = file.WriteString(text); err != nil {
+	if err := os.WriteFile(db.getPath(), text, 0644); err != nil {
 		return ErrorCannotUpdateDB
 	}
 

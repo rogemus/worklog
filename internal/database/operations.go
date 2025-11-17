@@ -1,7 +1,6 @@
 package database
 
 import (
-	"slices"
 	"worklog/internal/task"
 	"worklog/internal/weekRange"
 )
@@ -32,19 +31,16 @@ func (db *DB) RemoveAllTasks() error {
 
 func (db *DB) RemoveTask(taskId int) error {
 	tasks, err := db.readDBFile()
+
 	if err != nil {
 		return err
 	}
 
-	idx := slices.IndexFunc(tasks, func(t task.Task) bool {
-		return t.ID == taskId
-	})
-
-	if idx < 0 {
+	if len(tasks) < taskId {
 		return ErrorNoTask
 	}
 
-	tasks = append(tasks[:idx], tasks[idx+1:]...)
+	tasks = append(tasks[:taskId], tasks[taskId+1:]...)
 
 	if err := db.saveDBFile(tasks); err != nil {
 		return err
@@ -59,15 +55,7 @@ func (db *DB) UpdateTask(t task.Task) (task.Task, error) {
 		return task.Task{}, err
 	}
 
-	idx := slices.IndexFunc(tasks, func(ta task.Task) bool {
-		return ta.ID == t.ID
-	})
-
-	if idx < 0 {
-		return task.Task{}, ErrorNoTask
-	}
-
-	tasks[idx] = t
+	tasks[t.ID] = t
 
 	if err := db.saveDBFile(tasks); err != nil {
 		return task.Task{}, err
@@ -84,15 +72,11 @@ func (db *DB) FindTaskById(taskId int) (task.Task, error) {
 		return foundTask, err
 	}
 
-	idx := slices.IndexFunc(tasks, func(ta task.Task) bool {
-		return ta.ID == taskId
-	})
-
-	if idx == -1 {
+	if len(tasks) < taskId {
 		return foundTask, ErrorNoTask
 	}
 
-	foundTask = tasks[idx]
+	foundTask = tasks[taskId]
 
 	return foundTask, nil
 }

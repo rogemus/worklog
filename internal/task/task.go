@@ -36,11 +36,11 @@ func NewTaskFromStr(text string, lineNumber int) Task {
 	return task
 }
 
-func (t Task) String() string {
+func (t Task) ToString() string {
 	formatted := fmt.Sprintf(
 		"[%s] %s",
 		t.GetFormattedCreated(),
-		t.Name,
+		strings.TrimSpace(t.Name),
 	)
 
 	tags := t.GetFormattedTags()

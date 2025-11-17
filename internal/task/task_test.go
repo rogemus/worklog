@@ -43,7 +43,7 @@ func TestTest(t *testing.T) {
 
 	for testName, test := range tests {
 		t.Run(testName, func(t *testing.T) {
-			taskStr := test.in.String()
+			taskStr := test.in.ToString()
 
 			utils.AssetEqual(t, taskStr, test.out)
 		})
