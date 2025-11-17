@@ -42,7 +42,7 @@ var reportCmd = &cobra.Command{
 		tasks, err := db.FindTasksForWeek(tasksRange)
 
 		if err != nil && errors.Is(err, database.ErrorNoTasks) {
-			fmt.Printf("No tasks for week: [%s - %s]\n", tasksRange.Start, tasksRange.End)
+			fmt.Printf("No tasks for week: %s\n", rangeLabel)
 			return
 		} else if err != nil {
 			fmt.Println("Error: cannot find tasks", err)
