@@ -43,10 +43,10 @@ func RenderAsList(tasks []task.Task) {
 	}
 
 	for _, group := range groups {
-		fmt.Printf("%s\n", group.dateStr)
+		fmt.Printf("\n%s\n", group.dateStr)
 
 		for _, task := range group.tasks {
-			fmt.Printf("  %s: [%s] %s\n", task.GetFormattedId(), task.GetFormattedCreatedTime(), task.Name)
+			fmt.Printf("  %s\n", task.ToString())
 		}
 	}
 }

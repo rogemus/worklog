@@ -3,7 +3,6 @@ package database
 import (
 	"bufio"
 	"errors"
-	"fmt"
 	"os"
 	"strings"
 	"worklog/internal/task"
@@ -92,11 +91,9 @@ func (db *DB) readDBFile() ([]task.Task, error) {
 	scanner.Split(bufio.ScanLines)
 	lineNumber := 0
 
-	// Read line by line
 	for scanner.Scan() {
 		line := scanner.Text()
 		task := task.NewTaskFromStr(line, lineNumber)
-		fmt.Printf("[%v]", task)
 
 		if task.Name != "" {
 			tasks = append(tasks, task)

@@ -29,7 +29,7 @@ var reportCmd = &cobra.Command{
 			return
 		}
 
-		listTitle := fmt.Sprintf("Tasks for week: %s", week.GetFormatedRange())
+		listTitle := fmt.Sprintf("\nTasks for week: %s", week.GetFormatedRange())
 		fmt.Println(listTitle)
 
 		reports.RenderAsList(tasks)
