@@ -21,5 +21,6 @@ func InitCommands(datab *database.DB) {
 	rootCmd.AddCommand(dropCmd)
 
 	// REPORT
+	reportCmd.Flags().BoolVar(&month, "month", false, "report tasks from whole month")
 	rootCmd.AddCommand(reportCmd)
 }

@@ -17,6 +17,13 @@ func NewWeekRange(date time.Time) WeekRange {
 	return week
 }
 
+func NewMonthRange(date time.Time) WeekRange {
+	var week WeekRange
+	week.CalculateMonthRange(date)
+
+	return week
+}
+
 func (w *WeekRange) CalculateWeekRange(date time.Time) {
 	// NOTE: go back to Monday
 	for date.Weekday() != time.Monday {
@@ -27,6 +34,19 @@ func (w *WeekRange) CalculateWeekRange(date time.Time) {
 
 	w.Start = date
 	w.End = date.AddDate(0, 0, 6)
+}
+
+func (w *WeekRange) CalculateMonthRange(date time.Time) {
+	date = time.Date(date.Year(), date.Month(), 1, 0, 0, 0, 1, time.UTC)
+
+	w.Start = date
+	w.End = date.AddDate(0, 1, -1)
+}
+
+func (w WeekRange) GetFormatedRangeForMonth() string {
+	startFormatted := w.Start.Format("02-01-2006")
+	endFormatted := w.End.Format("02-01-2006")
+	return fmt.Sprintf("[%s - %s]", startFormatted, endFormatted)
 }
 
 func (w WeekRange) GetFormatedRange() string {
