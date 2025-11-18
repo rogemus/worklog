@@ -25,6 +25,14 @@ func NewTask(name string, date time.Time, tags []string) Task {
 	}
 }
 
+func NewTaskFromGit(created time.Time, branch, repo string) Task {
+	task := GitToTask(branch, repo)
+	task.Created = created
+	task.ID = -1
+
+	return task
+}
+
 func NewTaskFromStr(text string, lineNumber int) Task {
 	var task Task
 

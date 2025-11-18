@@ -17,6 +17,6 @@ uninstall:
   @echo "Uninstalling..."
   rm $HOME/go/bin/worklog
 
-test:
+test args:
   @echo "Testing..."
-  go test ./... | gocolor
+  go test ./... {{args}} | gocolor
