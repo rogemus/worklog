@@ -20,3 +20,4 @@ uninstall:
 test args:
   @echo "Testing..."
   go test ./... {{args}} | gocolor
+

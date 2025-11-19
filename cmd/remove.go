@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"strconv"
+	"worklog/internal/database"
 
 	"github.com/spf13/cobra"
 )
@@ -23,6 +24,7 @@ var removeCmd = &cobra.Command{
 			return
 		}
 
+		db := database.NewDB(dbPath)
 		err = db.RemoveTask(taskId)
 		if err != nil {
 			fmt.Println("Error: cannot remove task\n", err)

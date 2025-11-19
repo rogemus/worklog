@@ -15,14 +15,9 @@ type DB struct {
 	Tasks task.Task
 }
 
-const defaultPath = ".config/worklog"
 const defaultFileName = "worklog.txt"
 
 func NewDB(path string) *DB {
-	if path == "" {
-		path = defaultPath
-	}
-
 	db := &DB{
 		path:     path,
 		fileName: defaultFileName,
@@ -37,13 +32,17 @@ func NewDB(path string) *DB {
 }
 
 func (db DB) getPath() string {
-	dirname, err := os.UserHomeDir()
+	if strings.HasPrefix(db.path, ".config") {
+		dirname, err := os.UserHomeDir()
 
-	if err != nil {
-		dirname = "."
+		if err != nil {
+			dirname = "."
+		}
+
+		return dirname + "/" + db.path + "/" + db.fileName
 	}
 
-	return dirname + "/" + db.path + "/" + db.fileName
+	return db.path + "/" + db.fileName
 }
 
 func (db *DB) createDBdir() error {
@@ -117,7 +116,6 @@ func (db *DB) appendDBFile(task task.Task) error {
 	defer file.Close()
 
 	text := task.ToString() + "\n"
-
 	if _, err = file.WriteString(text); err != nil {
 		return ErrorCannotUpdateDB
 	}
@@ -131,8 +129,8 @@ func (db *DB) saveDBFile(tasks []task.Task) error {
 	for _, task := range tasks {
 		tasksStr = append(tasksStr, task.ToString())
 	}
-	text := ([]byte)(strings.Join(tasksStr, "\n"))
 
+	text := ([]byte)(strings.Join(tasksStr, "\n"))
 	if err := os.WriteFile(db.getPath(), text, 0644); err != nil {
 		return ErrorCannotUpdateDB
 	}

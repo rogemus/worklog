@@ -14,12 +14,14 @@ var findCmd = &cobra.Command{
 	Short: "Search for tasks in your history.",
 	Long:  "Use this command to search for tasks you've logged by keyword",
 	Run: func(cmd *cobra.Command, args []string) {
+
 		if len(args) == 0 {
 			fmt.Println("Error: Provide query")
 			return
 		}
 
 		query := strings.Join(args, " ")
+		db := database.NewDB(dbPath)
 		tasks, err := db.FindTasksByName(query)
 
 		if err != nil && errors.Is(err, database.ErrorNoTasks) {

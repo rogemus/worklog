@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"strings"
 	"time"
+	"worklog/internal/database"
 	"worklog/internal/task"
 
 	"github.com/spf13/cobra"
@@ -20,6 +21,8 @@ var newCmd = &cobra.Command{
 	Short: "Add a new task to your weekly log",
 	Long:  "Use this command to record a new task you've worked on. You can include details such as the task name, description, date",
 	Run: func(cmd *cobra.Command, args []string) {
+		db := database.NewDB(dbPath)
+
 		taskDate := time.Now()
 		taskName := strings.TrimSpace(strings.Join(args, " "))
 

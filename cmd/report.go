@@ -39,6 +39,7 @@ var reportCmd = &cobra.Command{
 			rangeLabel = tasksRange.GetFormatedRange()
 		}
 
+		db := database.NewDB(dbPath)
 		tasks, err := db.FindTasksForWeek(tasksRange)
 
 		if err != nil && errors.Is(err, database.ErrorNoTasks) {
