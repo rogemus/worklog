@@ -2,12 +2,12 @@ setup:
   @echo "Downloading dependencies..."
   go get -v ./...
 
-build: setup
+build: setup test
   @echo "Builing app..."
   go build -o worklog 
   @echo "Build Successfull 🎉!"
 
-install: setup build
+install: setup test build
   @echo "Installing..."™
   go install
   @echo "Install Successfull 🎉!"
