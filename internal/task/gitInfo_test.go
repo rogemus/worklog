@@ -12,19 +12,19 @@ func TestGitToTask(t *testing.T) {
 	}{
 		"feat branch with long task ID": {
 			in:  []string{"feat/XXX-1-add-login", "auth-service"},
-			out: Task{Branch: "feat/XXX-1-add-login", Name: "Add Login", IssueId: "XXX-1", Tags: []string{"feat"}, Repo: "auth-service"},
+			out: Task{Branch: "feat/XXX-1-add-login", Name: "XXX-1: Add Login", IssueId: "XXX-1", Tags: []string{"feat"}, Repo: "auth-service"},
 		},
 		"fix branch with short task ID": {
 			in:  []string{"fix/2-correct-validation", "user-service"},
-			out: Task{Branch: "fix/2-correct-validation", Name: "Correct Validation", IssueId: "2", Tags: []string{"fix"}, Repo: "user-service"},
+			out: Task{Branch: "fix/2-correct-validation", Name: "2: Correct Validation", IssueId: "2", Tags: []string{"fix"}, Repo: "user-service"},
 		},
 		"FEAT branch uppercase long task ID": {
 			in:  []string{"FEAT/XXX-3-ADD-PAYMENT-GATEWAY", "payment-service"},
-			out: Task{Branch: "FEAT/XXX-3-ADD-PAYMENT-GATEWAY", Name: "Add Payment Gateway", IssueId: "XXX-3", Tags: []string{"feat"}, Repo: "payment-service"},
+			out: Task{Branch: "FEAT/XXX-3-ADD-PAYMENT-GATEWAY", Name: "XXX-3: Add Payment Gateway", IssueId: "XXX-3", Tags: []string{"feat"}, Repo: "payment-service"},
 		},
 		"FIX branch uppercase short task ID": {
 			in:  []string{"FIX/4-HANDLE-TIMEOUT", "order-service"},
-			out: Task{Branch: "FIX/4-HANDLE-TIMEOUT", Name: "Handle Timeout", IssueId: "4", Tags: []string{"fix"}, Repo: "order-service"},
+			out: Task{Branch: "FIX/4-HANDLE-TIMEOUT", Name: "4: Handle Timeout", IssueId: "4", Tags: []string{"fix"}, Repo: "order-service"},
 		},
 		"feat branch without task ID": {
 			in:  []string{"feat/improve-dashboard", "frontend-app"},
@@ -44,19 +44,19 @@ func TestGitToTask(t *testing.T) {
 		},
 		"simple branch lowercase with short task ID": {
 			in:  []string{"123-add-login", "auth-service"},
-			out: Task{Branch: "123-add-login", Name: "Add Login", IssueId: "123", Repo: "auth-service"},
+			out: Task{Branch: "123-add-login", Name: "123: Add Login", IssueId: "123", Repo: "auth-service"},
 		},
 		"simple branch lowercase with long task ID": {
 			in:  []string{"ABC-123-add-login", "auth-service"},
-			out: Task{Branch: "ABC-123-add-login", Name: "Add Login", IssueId: "ABC-123", Repo: "auth-service"},
+			out: Task{Branch: "ABC-123-add-login", Name: "ABC-123: Add Login", IssueId: "ABC-123", Repo: "auth-service"},
 		},
 		"simple branch uppercase with short task ID": {
 			in:  []string{"123-ADD-PAYMENT-GATEWAY", "payment-service"},
-			out: Task{Branch: "123-ADD-PAYMENT-GATEWAY", Name: "Add Payment Gateway", IssueId: "123", Repo: "payment-service"},
+			out: Task{Branch: "123-ADD-PAYMENT-GATEWAY", Name: "123: Add Payment Gateway", IssueId: "123", Repo: "payment-service"},
 		},
 		"simple branch uppercase with long task ID": {
 			in:  []string{"CDA-123-ADD-PAYMENT-GATEWAY", "payment-service"},
-			out: Task{Branch: "CDA-123-ADD-PAYMENT-GATEWAY", Name: "Add Payment Gateway", IssueId: "CDA-123", Repo: "payment-service"},
+			out: Task{Branch: "CDA-123-ADD-PAYMENT-GATEWAY", Name: "CDA-123: Add Payment Gateway", IssueId: "CDA-123", Repo: "payment-service"},
 		},
 	}
 
@@ -65,6 +65,7 @@ func TestGitToTask(t *testing.T) {
 			task := GitToTask(test.in[0], test.in[1])
 			utils.AssetEqual(t, task.ID, 0)
 			utils.AssetEqual(t, task.Created, test.out.Created)
+			utils.AssetEqual(t, task.Name, test.out.Name)
 			utils.AssetEqual(t, task.Branch, test.out.Branch)
 			utils.AssetEqual(t, task.Repo, test.out.Repo)
 			utils.AssetEqual(t, task.IssueId, test.out.IssueId)

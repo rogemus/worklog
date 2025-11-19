@@ -10,6 +10,7 @@ import (
 )
 
 func GitToTask(branch, repoName string) Task {
+	c := cases.Title(language.English)
 	var (
 		task    Task
 		name    string
@@ -33,11 +34,12 @@ func GitToTask(branch, repoName string) Task {
 	if issueId != "" {
 		task.IssueId = issueId
 		branch = strings.Replace(branch, fmt.Sprintf("%s-", issueId), "", 1)
+		name = strings.ReplaceAll(branch, "-", " ")
+		task.Name = fmt.Sprintf("%s: %s", issueId, c.String(name))
+	} else {
+		name = strings.ReplaceAll(branch, "-", " ")
+		task.Name = c.String(name)
 	}
-
-	c := cases.Title(language.English)
-	name = strings.ReplaceAll(branch, "-", " ")
-	name = c.String(name)
 
 	return task
 }
