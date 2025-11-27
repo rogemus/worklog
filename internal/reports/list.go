@@ -3,11 +3,13 @@ package reports
 import (
 	"fmt"
 	"slices"
+	"time"
 	"worklog/internal/task"
 )
 
 type TaskGroup struct {
 	dateStr string
+	date    time.Time
 	tasks   []task.Task
 }
 
@@ -35,6 +37,7 @@ func RenderAsList(tasks []task.Task) {
 		} else {
 			group := TaskGroup{
 				dateStr: dateStr,
+				date:    t.Created,
 				tasks:   []task.Task{t},
 			}
 
@@ -43,7 +46,7 @@ func RenderAsList(tasks []task.Task) {
 	}
 
 	for _, group := range groups {
-		fmt.Printf("\n%s\n", group.dateStr)
+		fmt.Printf("\n%s (%s)\n", group.dateStr, group.date.Weekday())
 
 		for _, task := range group.tasks {
 			fmt.Printf("  %s\n", task.ToString())
