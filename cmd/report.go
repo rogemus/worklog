@@ -6,6 +6,7 @@ import (
 	"time"
 	"worklog/internal/database"
 	"worklog/internal/reports"
+	"worklog/internal/task"
 	"worklog/internal/weekRange"
 
 	"github.com/spf13/cobra"
@@ -13,7 +14,8 @@ import (
 
 // FLAGS
 var (
-	month bool
+	month      bool
+	reportDate string
 )
 
 var reportCmd = &cobra.Command{
@@ -28,6 +30,17 @@ var reportCmd = &cobra.Command{
 			rangeTitle string
 			tasksRange weekRange.WeekRange
 		)
+
+		if reportDate != "" {
+			parsedDate, err := time.Parse("2006-01-02", reportDate)
+
+			if err != nil {
+				fmt.Printf("%s\n", task.ErrorParseInvalidCreatedDate.Error())
+				return
+			}
+
+			date = parsedDate
+		}
 
 		if month {
 			tasksRange = weekRange.NewMonthRange(date)

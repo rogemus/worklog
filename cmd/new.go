@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	date  string
-	isGit bool
+	isGit   bool
+	newDate string
 )
 
 var newCmd = &cobra.Command{
@@ -26,8 +26,8 @@ var newCmd = &cobra.Command{
 		taskDate := time.Now()
 		taskName := strings.TrimSpace(strings.Join(args, " "))
 
-		if date != "" {
-			parsedDate, err := time.Parse("2006-01-02", date)
+		if newDate != "" {
+			parsedDate, err := time.Parse("2006-01-02", newDate)
 
 			if err != nil {
 				fmt.Printf("%s\n", task.ErrorParseInvalidCreatedDate.Error())
