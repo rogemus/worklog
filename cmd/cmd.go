@@ -1,9 +1,14 @@
 package cmd
 
 var dbPath string
+var appVersion string
 
-func InitCommands() {
+func InitCommands(version string) {
+	appVersion = version
 	rootCmd.PersistentFlags().StringVarP(&dbPath, "db-path", "p", ".config/worklog", "location of the database file")
+
+	// VERSION
+	rootCmd.AddCommand(versionCmd)
 
 	// FIND
 	rootCmd.AddCommand(findCmd)
