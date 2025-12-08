@@ -4,10 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"time"
-	"worklog/internal/database"
-	"worklog/internal/reports"
-	"worklog/internal/task"
-	"worklog/internal/weekRange"
+
+	"github.com/rogemus/worklog/internal/database"
+	"github.com/rogemus/worklog/internal/reports"
+	"github.com/rogemus/worklog/internal/task"
+	"github.com/rogemus/worklog/internal/weekRange"
 
 	"github.com/spf13/cobra"
 )

@@ -1,4 +1,4 @@
-module worklog
+module github.com/rogemus/worklog
 
 go 1.25.0
 

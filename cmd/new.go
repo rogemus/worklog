@@ -5,8 +5,9 @@ import (
 	"os/exec"
 	"strings"
 	"time"
-	"worklog/internal/database"
-	"worklog/internal/task"
+
+	"github.com/rogemus/worklog/internal/database"
+	"github.com/rogemus/worklog/internal/task"
 
 	"github.com/spf13/cobra"
 )

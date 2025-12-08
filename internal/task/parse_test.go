@@ -3,7 +3,8 @@ package task
 import (
 	"testing"
 	"time"
-	"worklog/internal/utils"
+
+	"github.com/rogemus/worklog/internal/utils"
 )
 
 func TestParse(t *testing.T) {

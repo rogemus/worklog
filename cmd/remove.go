@@ -3,7 +3,8 @@ package cmd
 import (
 	"fmt"
 	"strconv"
-	"worklog/internal/database"
+
+	"github.com/rogemus/worklog/internal/database"
 
 	"github.com/spf13/cobra"
 )

@@ -5,7 +5,8 @@ import (
 	"errors"
 	"os"
 	"strings"
-	"worklog/internal/task"
+
+	"github.com/rogemus/worklog/internal/task"
 )
 
 type DB struct {

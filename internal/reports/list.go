@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"slices"
 	"time"
-	"worklog/internal/task"
+
+	"github.com/rogemus/worklog/internal/task"
 )
 
 type TaskGroup struct {

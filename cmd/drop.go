@@ -2,7 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"worklog/internal/database"
+
+	"github.com/rogemus/worklog/internal/database"
 
 	"github.com/spf13/cobra"
 )

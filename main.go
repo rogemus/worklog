@@ -1,7 +1,7 @@
 package main
 
 import (
-	"worklog/cmd"
+	"github.com/rogemus/worklog/cmd"
 )
 
 func main() {

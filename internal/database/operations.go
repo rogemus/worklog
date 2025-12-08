@@ -1,8 +1,8 @@
 package database
 
 import (
-	"worklog/internal/task"
-	"worklog/internal/weekRange"
+	"github.com/rogemus/worklog/internal/task"
+	"github.com/rogemus/worklog/internal/weekRange"
 )
 
 func (db *DB) AddTask(t task.Task) (task.Task, error) {

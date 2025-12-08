@@ -2,7 +2,8 @@ package task
 
 import (
 	"testing"
-	"worklog/internal/utils"
+
+	"github.com/rogemus/worklog/internal/utils"
 )
 
 func TestGitToTask(t *testing.T) {
