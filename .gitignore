@@ -1,3 +1,5 @@
 db.json
 worklog.txt
 worklog
+# Added by goreleaser init:
+dist/
