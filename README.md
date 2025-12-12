@@ -14,8 +14,7 @@ Worklog is a lightweight CLI tool for tracking what you work on during the week.
 Clone the repository and make sure the executable is available in your PATH.
 
 ```bash
-git clone <repository-url>
-cd worklog
+$ go install github.com/rogemus/worklog@latest
 ```
 
 ## Usage
@@ -28,9 +27,10 @@ worklog [command]
 
 - **completion**: Generate the autocompletion script for the specified shell
 - **drop**: Delete all tasks from history
-<!-- - **find**: Search for tasks in your history -->
+- **find**: Search for tasks in your history
 - **help**: Help about any command
 - **new**: Add a new task to your weekly log
+- **version**: Display app version
 - **remove**: Delete a task from your history
 - **report**: Show a summary of tasks for the current week
 
@@ -47,7 +47,3 @@ Use `worklog [command] --help` for more information about a command.
 worklog new "Finish writing documentation"
 worklog report
 ```
-
-## License
-
-This project is licensed under the MIT License.
