@@ -135,8 +135,11 @@ func (t Task) MatchId(id int) bool {
 	return false
 }
 
-func (t Task) MatchName(query string) bool {
-	if strings.Contains(t.Name, query) {
+func (t Task) MatchName(searchQuery string) bool {
+	name := strings.ToLower(t.Name)
+	query := strings.ToLower(searchQuery)
+
+	if strings.Contains(name, query) {
 		return true
 	}
 

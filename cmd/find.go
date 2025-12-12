@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/rogemus/worklog/internal/database"
+	"github.com/rogemus/worklog/internal/reports"
 
 	"github.com/spf13/cobra"
 )
@@ -33,8 +34,8 @@ var findCmd = &cobra.Command{
 			return
 		}
 
-		for _, task := range tasks {
-			fmt.Printf("%s [%d] %s\n", task.Created, task.ID, task.Name)
-		}
+		listTitle := fmt.Sprintf("\nTasks [#%d] for query [%s]", len(tasks), query)
+		fmt.Println(listTitle)
+		reports.RenderAsList(tasks)
 	},
 }
