@@ -11,6 +11,11 @@ func InitCommands(version string) {
 	rootCmd.AddCommand(versionCmd)
 
 	// FIND
+	findCmd.Flags().BoolVarP(&findByBranchName, "branch", "b", false, "find by branch name")
+	findCmd.Flags().BoolVarP(&findByRepoName, "repo", "r", false, "find by repo name")
+	findCmd.Flags().BoolVarP(&findByIssue, "issue", "i", false, "find by issue name")
+	// TODO: need implementation
+	// findCmd.Flags().BoolVarP(&findByTags, "tag", "t", false, "find by tag name")
 	rootCmd.AddCommand(findCmd)
 
 	// NEW

@@ -7,8 +7,17 @@ import (
 
 	"github.com/rogemus/worklog/internal/database"
 	"github.com/rogemus/worklog/internal/reports"
+	"github.com/rogemus/worklog/internal/task"
 
 	"github.com/spf13/cobra"
+)
+
+var (
+	// TODO: not implemented
+	findByTags       bool
+	findByRepoName   bool
+	findByBranchName bool
+	findByIssue      bool
 )
 
 var findCmd = &cobra.Command{
@@ -16,15 +25,41 @@ var findCmd = &cobra.Command{
 	Short: "Search for tasks in your history.",
 	Long:  "Use this command to search for tasks you've logged by keyword",
 	Run: func(cmd *cobra.Command, args []string) {
-
 		if len(args) == 0 {
 			fmt.Println("Error: Provide query")
 			return
 		}
 
-		query := strings.Join(args, " ")
-		db := database.NewDB(dbPath)
-		tasks, err := db.FindTasksByName(query)
+		var (
+			tasks     []task.Task
+			err       error
+			query     = strings.Join(args, " ")
+			db        = database.NewDB(dbPath)
+			modifiers = []bool{
+				findByTags,
+				findByRepoName,
+				findByBranchName,
+				findByIssue,
+			}
+		)
+
+		if hasMultipleFlagSet(modifiers) {
+			fmt.Printf("%s\n", task.ErrorFindMultipleFlags.Error())
+			return
+		}
+
+		// TODO: (for future relase) allow to use all flags at once
+
+		switch {
+		case findByBranchName:
+			tasks, err = db.FindTasks(query, "branch")
+		case findByIssue:
+			tasks, err = db.FindTasks(query, "issue")
+		case findByRepoName:
+			tasks, err = db.FindTasks(query, "repo")
+		default:
+			tasks, err = db.FindTasks(query, "name")
+		}
 
 		if err != nil && errors.Is(err, database.ErrorNoTasks) {
 			fmt.Printf("No tasks found for query: %s\n", query)
@@ -38,4 +73,23 @@ var findCmd = &cobra.Command{
 		fmt.Println(listTitle)
 		reports.RenderAsList(tasks)
 	},
+}
+
+func hasMultipleFlagSet(modifiers []bool) bool {
+	found := []bool{}
+
+	for _, modifier := range modifiers {
+		if modifier {
+
+			if len(found) == 1 {
+				// NOTE: one true flag is saved
+
+				return true
+			}
+
+			found = append(found, modifier)
+		}
+	}
+
+	return false
 }

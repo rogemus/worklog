@@ -1,6 +1,8 @@
 package database
 
 import (
+	"strings"
+
 	"github.com/rogemus/worklog/internal/task"
 	"github.com/rogemus/worklog/internal/weekRange"
 )
@@ -81,16 +83,32 @@ func (db *DB) FindTaskById(taskId int) (task.Task, error) {
 	return foundTask, nil
 }
 
-func (db *DB) FindTasksByName(query string) ([]task.Task, error) {
-	var foundTasks []task.Task
-
+func (db *DB) FindTasks(query string, fieldName string) ([]task.Task, error) {
 	tasks, err := db.readDBFile()
+
 	if err != nil {
 		return nil, err
 	}
 
+	var (
+		foundTasks  []task.Task
+		value       string
+		searchQuery string = strings.ToLower(query)
+	)
+
 	for _, t := range tasks {
-		if ok := t.MatchName(query); ok {
+		switch fieldName {
+		case "name":
+			value = strings.ToLower(t.Name)
+		case "branch":
+			value = strings.ToLower(t.Branch)
+		case "repo":
+			value = strings.ToLower(t.Repo)
+		case "issue":
+			value = strings.ToLower(t.IssueId)
+		}
+
+		if strings.Contains(value, searchQuery) {
 			foundTasks = append(foundTasks, t)
 		}
 	}
