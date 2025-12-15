@@ -2,6 +2,7 @@ package task
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 	"time"
 )
@@ -125,6 +126,20 @@ func (t Task) GetFormattedRepo() string {
 	}
 
 	return fmt.Sprintf("@repo:%s", t.Repo)
+}
+
+func (t Task) MatchTags(tags []string) bool {
+	if len(t.Tags) == 0 {
+		return false
+	}
+
+	for _, taskTag := range t.Tags {
+		return slices.ContainsFunc(tags, func(qt string) bool {
+			return strings.Contains(taskTag, qt)
+		})
+	}
+
+	return false
 }
 
 func (t Task) MatchId(id int) bool {

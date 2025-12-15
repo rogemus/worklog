@@ -83,6 +83,35 @@ func (db *DB) FindTaskById(taskId int) (task.Task, error) {
 	return foundTask, nil
 }
 
+func (db *DB) FindTasksWithTags(tagsStr string) ([]task.Task, error) {
+	tasks, err := db.readDBFile()
+
+	if err != nil {
+		return nil, err
+	}
+
+	var (
+		foundTasks []task.Task
+		queryTags  = strings.Split(tagsStr, ",")
+	)
+
+	if len(tasks) == 0 {
+		return nil, task.ErrorFindWithoutTag
+	}
+
+	for _, t := range tasks {
+		if t.MatchTags(queryTags) {
+			foundTasks = append(foundTasks, t)
+		}
+	}
+
+	if len(foundTasks) == 0 {
+		return nil, ErrorNoTasks
+	}
+
+	return foundTasks, nil
+}
+
 func (db *DB) FindTasks(query string, fieldName string) ([]task.Task, error) {
 	tasks, err := db.readDBFile()
 

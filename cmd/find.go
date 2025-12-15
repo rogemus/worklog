@@ -57,6 +57,8 @@ var findCmd = &cobra.Command{
 			tasks, err = db.FindTasks(query, "issue")
 		case findByRepoName:
 			tasks, err = db.FindTasks(query, "repo")
+		case findByTags:
+			tasks, err = db.FindTasksWithTags(query)
 		default:
 			tasks, err = db.FindTasks(query, "name")
 		}

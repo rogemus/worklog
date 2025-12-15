@@ -10,3 +10,4 @@ var ErrorNotInGitRepo = errors.New("Command was not run in git repo")
 var ErrorMainBranch = errors.New("Cannot use `main`/`master` as task name")
 
 var ErrorFindMultipleFlags = errors.New("Cannot search using multiple flags")
+var ErrorFindWithoutTag = errors.New("Tags not provided")
