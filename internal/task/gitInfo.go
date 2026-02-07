@@ -35,11 +35,11 @@ func GitToTask(branch, repoName string) Task {
 		task.IssueId = issueId
 		branch = strings.Replace(branch, fmt.Sprintf("%s-", issueId), "", 1)
 		name = strings.ReplaceAll(branch, "-", " ")
-		task.Name = fmt.Sprintf("%s: %s", issueId, c.String(name))
 	} else {
 		name = strings.ReplaceAll(branch, "-", " ")
-		task.Name = c.String(name)
 	}
+
+	task.Name = c.String(name)
 
 	return task
 }

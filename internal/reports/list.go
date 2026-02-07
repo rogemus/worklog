@@ -3,9 +3,11 @@ package reports
 import (
 	"fmt"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/rogemus/worklog/internal/task"
+	"github.com/rogemus/worklog/internal/utils"
 )
 
 type TaskGroup struct {
@@ -47,10 +49,15 @@ func RenderAsList(tasks []task.Task) {
 	}
 
 	for _, group := range groups {
-		fmt.Printf("\n%s (%s)\n", group.dateStr, group.date.Weekday())
+		fmt.Printf("\n %s (%s) #%d ───────────────────────────────────────────────────── \n", group.dateStr, group.date.Weekday(), len(group.tasks))
 
-		for _, task := range group.tasks {
-			fmt.Printf("  %s\n", task.ToString())
+		for _, t := range group.tasks {
+			name := t.Name + strings.Repeat(" ", utils.MaxInt(40-len(t.Name), 0))
+			id := t.IssueId + strings.Repeat(" ", utils.MaxInt(10-len(t.IssueId), 0))
+			repo := t.Repo + strings.Repeat(" ", utils.MaxInt(15-len(t.Repo), 0))
+			tags := strings.Join(t.Tags, ",")
+
+			fmt.Printf("   %s %s %s [%s]\n", id, name, repo, tags)
 		}
 	}
 }

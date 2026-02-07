@@ -64,7 +64,7 @@ var reportCmd = &cobra.Command{
 			return
 		}
 
-		listTitle := fmt.Sprintf("\nTasks [#%d] for %s: %s", len(tasks), rangeTitle, rangeLabel)
+		listTitle := fmt.Sprintf("Tasks [#%d] for %s: %s", len(tasks), rangeTitle, rangeLabel)
 		fmt.Println(listTitle)
 
 		reports.RenderAsList(tasks)
